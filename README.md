@@ -1,9 +1,10 @@
 # Minesweeper
 A console application minesweeper game
-  using System;
-//
+ using System;
+ 
 static class Program
 {
+	
 	static void newGame(out int[] hiddenValues)
 	{
 		int tempNumber;
