@@ -5,30 +5,6 @@ using System;
 static class Program
 {
 	
-	static void ShowInstructions()
-	{
-		Console.WriteLine("Welcome to my game of Minesweeper  (Hit enter to Continue)");
-		Console.ReadLine();
-		Console.WriteLine("The Rules to this game are very simple:");
-		Console.ReadLine();
-		Console.WriteLine("There are 15 bombs placed randomly throughout the game board, selecting a bomb will result in the game ending as a loss");
-		Console.ReadLine();
-		Console.WriteLine("Each move that is not a bomb, will provide you information about the bombs in its immediate vicinity");
-		Console.ReadLine();
-		Console.WriteLine("The number in the square, represents the number of bombs that that position is touching (above below, beside or to the diagnol)");
-		Console.ReadLine();
-		Console.WriteLine("To select a move, type the number corresponding to the square that you want to select:");
-		Console.ReadLine();
-		Console.WriteLine("Ex: 47 represents row 4, column 7");
-		Console.ReadLine();
-		Console.WriteLine("To place down/remove a 'flag'/marker as to where you think a bomb is, type in * and hit enter");
-		Console.ReadLine();
-		Console.WriteLine("Proceed to type in a position on the board to place down a marker there");
-		Console.ReadLine();
-		Console.WriteLine("If you successfully unvail all 85 squares without bombs, you win!");
-		Console.ReadLine();
-		Console.WriteLine("GOOD LUCK");
-	}
 	static void NewGame(ref int[] hiddenValues)
 	{
 		Console.WriteLine();
@@ -62,6 +38,32 @@ static class Program
 		}
 
 	}
+	
+	static void ShowInstructions()
+	{
+		Console.WriteLine("Welcome to my game of Minesweeper  (Hit enter to Continue)");
+		Console.ReadLine();
+		Console.WriteLine("The Rules to this game are very simple:");
+		Console.ReadLine();
+		Console.WriteLine("There are 15 bombs placed randomly throughout the game board, selecting a bomb will result in the game ending as a loss");
+		Console.ReadLine();
+		Console.WriteLine("Each move that is not a bomb, will provide you information about the bombs in its immediate vicinity");
+		Console.ReadLine();
+		Console.WriteLine("The number in the square, represents the number of bombs that that position is touching (above below, beside or to the diagnol)");
+		Console.ReadLine();
+		Console.WriteLine("To select a move, type the number corresponding to the square that you want to select:");
+		Console.ReadLine();
+		Console.WriteLine("Ex: 47 represents row 4, column 7");
+		Console.ReadLine();
+		Console.WriteLine("To place down/remove a 'flag'/marker as to where you think a bomb is, type in * and hit enter");
+		Console.ReadLine();
+		Console.WriteLine("Proceed to type in a position on the board to place down a marker there");
+		Console.ReadLine();
+		Console.WriteLine("If you successfully unvail all 85 squares without bombs, you win!");
+		Console.ReadLine();
+		Console.WriteLine("GOOD LUCK");
+	}
+	
 	static void HiddenValueMaker(ref int[] hiddenValues)
 	{
 		int closeBombs;
