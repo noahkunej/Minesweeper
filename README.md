@@ -19,9 +19,14 @@ static class Program
 			ShowInstructions();
 		bool input = false;
 		string playerNumber = "1";
+		Console.Write("How many players (1 or 2)? ");
+		playerNumber = Console.ReadLine();
+		if(playerNumber == "1"|| playerNumber == "2")
+		input = true;
 		while(!input)
 		{
-			Console.Write("How many players (1 or 2)?");
+			Console.WriteLine(" Input not valid, please enter 1 or 2: ");
+			Console.Write("How many players (1 or 2)? ");
 			playerNumber = Console.ReadLine();
 			if(playerNumber == "1"|| playerNumber == "2")
 			input = true;
@@ -252,7 +257,7 @@ static class Program
 		Console.WriteLine("      _________________________________________");
 		Console.WriteLine("");
 	}
-	static void EnterMove(bool multiPlayerMode,ref int player,ref int [] hiddenValues, ref bool [] isShown, ref bool [] isMarked, ref bool isLoser, ref bool isWinner)
+	static void EnterMove(bool multiPlayerMode,ref int player,ref int [] hiddenValues, ref bool [] isShown, ref bool [] isMarked, ref bool isLoser, ref bool isWinner, ref int lastMove)
 	{
 		bool validMove = false;
 		int movePosition;
@@ -300,6 +305,7 @@ static class Program
 					}
 					else
 					{
+						lastMove = movePosition;
 						isShown[movePosition] = true;
 						if(multiPlayerMode==true)
 							player = (player +1)%2;
@@ -330,16 +336,32 @@ static class Program
 		return;
 		
 	}
-	static void endGame(int player, bool isWinner, int [] hiddenValues)
+	static void endGame(bool multiPlayerMode, int player, bool isWinner, int [] hiddenValues, int lastMove)
 	{
+		
 		if(isWinner)
 		{
+			Console.WriteLine();
 			Console.WriteLine("Congrats you won!!!!!!!!!!! :) :)");
 		}
 		else
 		{
 			ShowFullBoard(hiddenValues);
-			Console.WriteLine("Sorry There was a bomb there! better luck next time!!!");
+			Console.WriteLine();
+			if(!multiPlayerMode)
+				Console.WriteLine("Sorry There was a bomb at position {0}! better luck next time!!!", lastMove);
+			else if(player == 1)
+			{
+				Console.WriteLine("Sorry Player 1, there was a bomb at position {0}, you lose!", lastMove);
+				Console.WriteLine();
+				Console.WriteLine("Congratulations Player 2, you win!");
+			}
+			else
+			{
+				Console.WriteLine("Sorry player 2, there was a bomb at position {0}, you lose!", lastMove);
+				Console.WriteLine();
+				Console.WriteLine("Congratulations Player 1, you win!");
+			}
 		}
 		Console.ReadLine();
 		return;
@@ -350,6 +372,7 @@ static class Program
 		bool[]isShown = new bool [100];
 		bool[]isMarked = new bool [100];
 		int player = 0;
+		int lastMove = 0;
 		bool multiPlayerMode = false;
 		NewGame(ref multiPlayerMode,ref hiddenValues);
 		HiddenValueMaker(ref hiddenValues);
@@ -358,10 +381,10 @@ static class Program
 		ShowBoard(hiddenValues, isShown, isMarked);
 		while(!isLoser&&!isWinner)
 		{
-			EnterMove(multiPlayerMode,ref player, ref hiddenValues, ref isShown, ref isMarked, ref isLoser, ref isWinner);
+			EnterMove(multiPlayerMode,ref player, ref hiddenValues, ref isShown, ref isMarked, ref isLoser, ref isWinner, ref lastMove);
 			ShowBoard(hiddenValues, isShown, isMarked);
 		}
-		endGame(player,isWinner, hiddenValues);
+		endGame(multiPlayerMode, player,isWinner, hiddenValues, lastMove);
 		
 	}	
 }
