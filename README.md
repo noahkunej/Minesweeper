@@ -5,18 +5,29 @@ using System;
 static class Program
 {
 	
-	static void NewGame(ref int[] hiddenValues)
+	static void NewGame(ref bool multiPlayermode,ref int[] hiddenValues)
 	{
 		Console.WriteLine();
 		Console.WriteLine();
-		Console.WriteLine("             Welcome to Noah's Game of Mindsweeper!");
+		Console.WriteLine("Welcome to Noah's Game of Mindsweeper!");
 		Console.WriteLine();
-		Console.WriteLine("Do you require a short introduction to the rules?");
+		Console.Write("Do you require a short introduction to the rules? (Type 'yes' to see rules): ");
 	
 		string reply= Console.ReadLine();
 		reply=reply.ToLower();
 		if(reply == "yes")
 			ShowInstructions();
+		bool input = false;
+		string playerNumber = "1";
+		while(!input)
+		{
+			Console.Write("How many players (1 or 2)?");
+			playerNumber = Console.ReadLine();
+			if(playerNumber == "1"|| playerNumber == "2")
+			input = true;
+		}
+		if (playerNumber == "2")
+			multiPlayermode = true;
 		Console.WriteLine("Hit enter to proceed to game");
 		Console.ReadLine();
 		
@@ -60,6 +71,8 @@ static class Program
 		Console.WriteLine("Proceed to type in a position on the board to place down a marker there");
 		Console.ReadLine();
 		Console.WriteLine("If you successfully unvail all 85 squares without bombs, you win!");
+		Console.ReadLine();
+		Console.WriteLine("In two player mode, the players alternate moves until one player makes a mistake:");
 		Console.ReadLine();
 		Console.WriteLine("GOOD LUCK");
 	}
@@ -203,7 +216,6 @@ static class Program
 		{
 			if(i%10 == 0)
 			{
-				
 				if(i!=0)
 				{
 				Console.Write("|");
@@ -213,8 +225,6 @@ static class Program
 				{
 					Console.Write("Row {0} ", i);
 				}
-				
-				
 				if(i!=0)
 				{
 					Console.WriteLine("      _________________________________________");
@@ -242,7 +252,7 @@ static class Program
 		Console.WriteLine("      _________________________________________");
 		Console.WriteLine("");
 	}
-	static void EnterMove(ref int [] hiddenValues, ref bool [] isShown, ref bool [] isMarked, ref bool isLoser, ref bool isWinner)
+	static void EnterMove(bool multiPlayerMode,ref int player,ref int [] hiddenValues, ref bool [] isShown, ref bool [] isMarked, ref bool isLoser, ref bool isWinner)
 	{
 		bool validMove = false;
 		int movePosition;
@@ -251,7 +261,10 @@ static class Program
 		while(!validMove)
 		{
 			validMove=true;
-			Console.Write("Please enter move: ");
+			if(multiPlayerMode)
+				Console.Write("Player {0}, please enter move: ", player+1);
+			else
+				Console.Write("Please enter move: ");
 			word = Console.ReadLine();
 			if(word == "*")
 			{
@@ -288,6 +301,8 @@ static class Program
 					else
 					{
 						isShown[movePosition] = true;
+						if(multiPlayerMode==true)
+							player = (player +1)%2;
 						if(hiddenValues[movePosition] == -1)
 						{
 							isLoser = true;
@@ -315,7 +330,7 @@ static class Program
 		return;
 		
 	}
-	static void endGame(bool isWinner, int [] hiddenValues)
+	static void endGame(int player, bool isWinner, int [] hiddenValues)
 	{
 		if(isWinner)
 		{
@@ -334,18 +349,19 @@ static class Program
 		int[]hiddenValues = new int [100];
 		bool[]isShown = new bool [100];
 		bool[]isMarked = new bool [100];
-		NewGame(ref hiddenValues);
+		int player = 0;
+		bool multiPlayerMode = false;
+		NewGame(ref multiPlayerMode,ref hiddenValues);
 		HiddenValueMaker(ref hiddenValues);
 		bool isLoser = false;
 		bool isWinner = false;
 		ShowBoard(hiddenValues, isShown, isMarked);
 		while(!isLoser&&!isWinner)
 		{
-			
-			EnterMove(ref hiddenValues, ref isShown, ref isMarked, ref isLoser, ref isWinner);
+			EnterMove(multiPlayerMode,ref player, ref hiddenValues, ref isShown, ref isMarked, ref isLoser, ref isWinner);
 			ShowBoard(hiddenValues, isShown, isMarked);
 		}
-		endGame(isWinner, hiddenValues);
+		endGame(player,isWinner, hiddenValues);
 		
 	}	
 }
