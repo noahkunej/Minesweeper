@@ -43,7 +43,7 @@ static class Program
 		{
 			hiddenValues[j]=0;
 		}
-		for(int i = 0; i<15;)
+		for(int i = 0; i<16;)
 		{
 			tempNumber = rGen.Next(0,99);
 			if(hiddenValues[tempNumber] != -1)
@@ -307,6 +307,8 @@ static class Program
 					{
 						lastMove = movePosition;
 						isShown[movePosition] = true;
+						if(hiddenValues[movePosition] == 0)
+							BlowUp(hiddenValues, ref isShown, movePosition);
 						if(multiPlayerMode==true)
 							player = (player +1)%2;
 						if(hiddenValues[movePosition] == -1)
@@ -366,6 +368,100 @@ static class Program
 		Console.ReadLine();
 		return;
 	}
+	
+	static void BlowUp(int [] hiddenValues, ref bool [] isShown, int position)
+	{
+		int numberToBeBlownUp = 1;
+		int [] blownUpSquares = new int[100];
+		bool [] alreadyBlownUp = new bool [100];
+		blownUpSquares[0] = position;
+		for(int i = 0; i < numberToBeBlownUp; i++)
+		
+		{
+			Console.WriteLine(numberToBeBlownUp);
+		if(alreadyBlownUp[blownUpSquares[i]] == false){
+			Console.WriteLine(blownUpSquares[i]);
+			if(blownUpSquares[i] == 0)
+				{
+					Console.WriteLine("GFGDFSGEFSDWDSF");
+				}
+			if(blownUpSquares[i]<90)
+			{
+				isShown[blownUpSquares[i] +10] = true;
+				if(blownUpSquares[i]%10 != 0)
+					isShown[blownUpSquares[i] + 9] = true;
+				if(hiddenValues[blownUpSquares[i] + 10] == 0)
+				{
+					if(alreadyBlownUp[blownUpSquares[i] + 10] == false)
+					{
+						Console.WriteLine("Below");
+						
+						blownUpSquares[numberToBeBlownUp] = blownUpSquares[i] + 10;
+						numberToBeBlownUp++;
+						isShown[blownUpSquares[i] +10] = true;
+						alreadyBlownUp[blownUpSquares[i]] = true;
+					}
+				}
+			}
+			if(blownUpSquares[i]>9)
+			{
+				if(blownUpSquares[i]%10 != 0)
+					isShown[blownUpSquares[i] - 11] = true;
+				isShown[blownUpSquares[i] -10] = true;
+				if(hiddenValues[blownUpSquares[i] - 10] == 0)
+				{
+					if(alreadyBlownUp[blownUpSquares[i] - 10] == false)
+					{
+						Console.WriteLine("Below");
+						
+						blownUpSquares[numberToBeBlownUp] = blownUpSquares[i] - 10;
+						numberToBeBlownUp++;
+						isShown[blownUpSquares[i] -10] = true;
+						alreadyBlownUp[blownUpSquares[i]] = true;
+					}
+				}
+			}
+			if(blownUpSquares[i]%10!=0)
+			{
+				isShown[blownUpSquares[i] -1] = true;
+				if(hiddenValues[blownUpSquares[i] - 1] == 0)
+				{
+					if(alreadyBlownUp[blownUpSquares[i] - 1] == false)
+					{
+						Console.WriteLine("Below");
+						
+						blownUpSquares[numberToBeBlownUp] = blownUpSquares[i] - 1;
+						numberToBeBlownUp++;
+						isShown[blownUpSquares[i] -1] = true;
+						alreadyBlownUp[blownUpSquares[i]] = true;
+					}
+				}
+			}
+			if((blownUpSquares[i] + 1)%10!=0)
+			{
+				if(blownUpSquares[i]<90)
+					isShown[blownUpSquares[i] + 11] = true;
+				if(blownUpSquares[i]>9)
+					isShown[blownUpSquares[i] - 9] = true;
+				isShown[blownUpSquares[i] +1] = true;
+				if(hiddenValues[blownUpSquares[i] + 1] == 0)
+				{
+					if(alreadyBlownUp[blownUpSquares[i] + 1] == false)
+					{
+						Console.WriteLine("Below");
+						
+						blownUpSquares[numberToBeBlownUp] = blownUpSquares[i] + 1;
+						numberToBeBlownUp++;
+						isShown[blownUpSquares[i] +1] = true;
+						alreadyBlownUp[blownUpSquares[i]] = true;
+					}
+				}
+			}
+			
+			isShown[blownUpSquares[i]] = true;
+			}
+		}
+	}
 	static void Main()
 	{
 		int[]hiddenValues = new int [100];
@@ -379,6 +475,7 @@ static class Program
 		bool isLoser = false;
 		bool isWinner = false;
 		ShowBoard(hiddenValues, isShown, isMarked);
+		
 		while(!isLoser&&!isWinner)
 		{
 			EnterMove(multiPlayerMode,ref player, ref hiddenValues, ref isShown, ref isMarked, ref isLoser, ref isWinner, ref lastMove);
